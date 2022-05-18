@@ -28,20 +28,20 @@ export class TasksController {
   //   }
   // }
 
-  // @Post()
-  // createTask(@Body() createTaskDto: CreateTaskDto): Task {
-  //   return this.tasksService.createTask(createTaskDto);
-  // }
+  @Post()
+  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto);
+  }
 
   @Get('/:id')
   getTaskById(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskById(id);
   }
 
-  // @Delete(':id')
-  // deleteTask(@Param('id') id: string) {
-  //   return this.tasksService.deleteTaskById(id);
-  // }
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string): Promise<Task> {
+    return this.tasksService.deleteTaskById(id);
+  }
 
   // @Patch(':id/status')
   // updateTaskStatus(
