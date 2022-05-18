@@ -12,28 +12,11 @@ export class TasksService {
     @InjectRepository(TasksRepository)
     private tasksRepository: TasksRepository,
   ) {}
-  // getAllTasks(): Task[] {
-  //   return this.tasks;
-  // }
-  // getTaskWithFilters(taskFilters: GetTaskFilterDto): Task[] {
-  //   const { status, search } = taskFilters;
-  //   let tasks = this.getAllTasks();
-  //   if (status) {
-  //     tasks = tasks.filter((task) => task.status === status);
-  //   }
-  //   if (search) {
-  //     tasks = tasks.filter((task) => {
-  //       if (
-  //         task.title.toLowerCase().includes(search.toLowerCase()) ||
-  //         task.description.toLowerCase().includes(search.toLowerCase())
-  //       ) {
-  //         return true;
-  //       }
-  //       return false;
-  //     });
-  //   }
-  //   return tasks;
-  // }
+
+  async getTasks(taskFilters: GetTaskFilterDto): Promise<Task[]> {
+    // get tasks and filter
+    return this.tasksRepository.getTasks(taskFilters);
+  }
   async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksRepository.createTask(createTaskDto);
   }
@@ -50,13 +33,12 @@ export class TasksService {
     const foundTask = await this.getTaskById(id);
     return await this.tasksRepository.remove(foundTask);
   }
-  // deleteTaskById(id: string): void {
-  //   const foundTask = this.getTaskById(id);
-  //   this.tasks = this.tasks.filter((task) => task.id !== foundTask.id);
-  // }
-  // updateTaskStatus(id: string, status: TaskStatus) {
-  //   const task = this.getTaskById(id);
-  //   task.status = status;
-  //   return task;
-  // }
+
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+
+    task.status = status;
+    await this.tasksRepository.save(task);
+    return task;
+  }
 }
