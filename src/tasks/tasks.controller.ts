@@ -11,7 +11,6 @@ import {
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filiters.dto';
 import { UpdateTaskStatusDto } from './dto/update-task.dto';
-import { TaskStatus } from './task-status.enum';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 
