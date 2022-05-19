@@ -11,9 +11,11 @@ import { Task } from './task.entity';
 
 @EntityRepository(Task)
 export class TasksRepository extends Repository<Task> {
-  async getTasks(taskFilters: GetTaskFilterDto): Promise<Task[]> {
+  async getTasks(taskFilters: GetTaskFilterDto, user: User): Promise<Task[]> {
     const { status, search } = taskFilters;
     const query = this.createQueryBuilder('task');
+
+    query.where({ user });
 
     if (status) {
       query.andWhere('task.status = :status', { status });
