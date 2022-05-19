@@ -20,7 +20,6 @@ export class UsersRepository extends Repository<User> {
     try {
       await this.save(user);
     } catch (err) {
-      console.log(err.code);
       // duplicate username error code from postgres
       if (err.code === '23505') {
         throw new ConflictException(err.detail);

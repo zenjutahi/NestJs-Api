@@ -1,3 +1,7 @@
+import {
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filiters.dto';
@@ -33,7 +37,16 @@ export class TasksRepository extends Repository<Task> {
       status: TaskStatus.OPEN,
     });
 
-    await this.save(task);
-    return task;
+    try {
+      await this.save(task);
+      return task;
+    } catch (err) {
+      // duplicate username error code from postgres
+      if (err.code === '23505') {
+        throw new ConflictException(err.detail);
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }
